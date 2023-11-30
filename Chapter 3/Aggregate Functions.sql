@@ -75,3 +75,64 @@ FROM films;
 -- Round duration_hours to two decimal places
 SELECT title, ROUND(duration / 60.0,2) AS duration_hours
 FROM films;
+
+
+-- Sorting single fields
+-- Select name from people and sort alphabetically
+SELECT name FROM people order by name;
+
+-- Select the title and duration from longest to shortest film
+SELECT title, duration FROM films ORDER BY duration 
+
+
+
+-- Sorting multiple fields
+-- Select the release year, duration, and title sorted by release year and duration
+SELECT release_year,duration,title FROM films ORDER BY release_year,duration
+
+-- Select the certification, release year, and title sorted by certification and release year
+SELECT certification,release_year,title FROM films ORDER BY certification,release_year
+
+
+
+-- GROUP BY single fields
+
+-- Find the release_year and film_count of each year
+SELECT release_year,COUNT(title) AS film_count FROM films GROUP BY release_year; 
+
+-- Find the release_year and average duration of films for each year
+SELECT release_year,AVG(duration) as avg_duration FROM films GROUP BY release_year
+
+-- Filter with HAVING
+
+
+
+-- Select the country and distinct count of certification as certification_count
+Select country,count(distinct(certification)) as certification_count from films
+--  Group by country
+Group by country
+-- Filter results to countries with more than 10 different certifications
+having count(distinct(certification)) > 10;
+
+
+-- HAVING and sorting
+
+-- Select the country and average_budget from films
+Select country , AVG(budget) as average_budget from films
+-- Group by country
+Group by country
+-- Filter to countries with an average_budget of more than one billion
+having AVG(budget) > 1000000000
+-- Order by descending order of the aggregated budget
+order by average_budget desc;
+
+
+-- All together now
+
+SELECT release_year, AVG(budget) AS avg_budget, AVG(gross) AS avg_gross
+FROM films
+WHERE release_year > 1990
+GROUP BY release_year
+HAVING AVG(budget) > 60000000
+-- Order the results from highest to lowest average gross and limit to one
+Order by avg_gross desc limit 1;
